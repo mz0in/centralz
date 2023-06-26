@@ -1,6 +1,7 @@
 version: "3"
 services:
   postgres14:
+    image: mz0in/odk:postgres
     volumes:
       - postgres14:/var/lib/odk/postgresql/14
     environment:
@@ -45,9 +46,7 @@ services:
     logging:
       driver: local
   nginx:
-    build:
-      context: .
-      dockerfile: nginx.dockerfile
+    image: mz0in/odk:nginx
     depends_on:
       - service
       - enketo
@@ -79,11 +78,9 @@ services:
       dockerfile: secrets.dockerfile
     command: './generate-secrets.sh'
   enketo:
+     image: mz0in/odk:nginx
     volumes:
       - secrets:/etc/secrets
-    build:
-      context: .
-      dockerfile: enketo.dockerfile
     restart: always
     depends_on:
       - secrets
